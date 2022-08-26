@@ -183,7 +183,7 @@ jobs:
         aws s3 cp "$GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain-cli_${CHIA_INSTALLER_VERSION}-1_amd64.deb" "s3://download.chia.net/dev/chia-blockchain-cli_${CHIA_DEV_BUILD}-1_amd64.deb"
 
     - name: Create Checksums
-      if: "!github.event.release.prerelease" && github.event.release.published || github.ref == 'refs/heads/main'
+      if: "!github.event.release.prerelease" || github.ref == 'refs/heads/main'
       env:
         CHIA_INSTALLER_VERSION: ${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}
       run: |
