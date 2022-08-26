@@ -31,6 +31,11 @@ jobs:
         python-version: [3.8]
 
     steps:
+    - name: Print Env
+      run: |
+        PRE_RELEASE=$(jq -r '.release.prerelease' "$GITHUB_EVENT_PATH")
+        RELEASE_TAG=$(jq -r '.release.tag_name' "$GITHUB_EVENT_PATH")
+        echo $PRE_RELEASE
     - uses: Chia-Network/actions/clean-workspace@main
 
     - name: Add safe git directory
