@@ -38,7 +38,7 @@ jobs:
         echo "$GITHUB_CONTEXT"
     
     - name: Set Env
-      if: github.event.release.published
+      if: github.event.action.published
       run: |
         PRE_RELEASE=$(jq -r '.release.prerelease' "$GITHUB_EVENT_PATH")
         RELEASE_TAG=$(jq -r '.release.tag_name' "$GITHUB_EVENT_PATH")
