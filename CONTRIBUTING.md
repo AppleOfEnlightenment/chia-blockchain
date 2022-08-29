@@ -11,7 +11,7 @@ If you want to learn more about this project, read the [wiki](https://github.com
 
 ## Contributions
 
-Please review this [diagram](https://drive.google.com/file/d/1r7AXTrj7gtD0Xy-9BtTZR6yv7WXMPgeM/view?usp=sharing), to better understand the git workflow.
+blah blah test test etc
 
 We would be pleased to accept code contributions to this project.
 As we have now released, the main priority is improving the mainnet blockchain.
