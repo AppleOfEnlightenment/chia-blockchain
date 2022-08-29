@@ -45,7 +45,11 @@ jobs:
         echo "RELEASE=true" >>$GITHUB_ENV
         echo "PRE_RELEASE=$PRE_RELEASE" >>$GITHUB_ENV
         echo "RELEASE_TAG=$RELEASE_TAG" >>$GITHUB_ENV
-        [[ $PRE_RELEASE == false ]] && echo "FULL_RELEASE=true" >>$GITHUB_ENV || echo "FULL_RELEASE=false" >>$GITHUB_ENV
+        if [ $PRE_RELEASE == false ]; then
+          echo "FULL_RELEASE=true" >>$GITHUB_ENV
+        else
+          echo "FULL_RELEASE=false" >>$GITHUB_ENV
+        fi
 
     - name: Prerelease
       if: env.PRE_RELEASE == 'true'
@@ -61,9 +65,9 @@ jobs:
       if: env.RELEASE == 'true'
       run: |
         echo "Doing some release action. I don't care what kind of release it is."
-        if [[ $PRE_RELEASE == true ]]; then
+        if [ $PRE_RELEASE == true ]; then
           echo "This is a prerelease, and your tag is $RELEASE_TAG"
-        elif [[ $FULL_RELEASE == true ]]; then
+        elif [ $FULL_RELEASE == true ]; then
           echo "This is a full release, and your tag is $RELEASE_TAG"
         else
           echo "What is this, a draft release?"
