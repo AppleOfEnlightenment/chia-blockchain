@@ -37,14 +37,40 @@ jobs:
       run: |
         echo "$GITHUB_CONTEXT"
     
-    # - name: Print Env
-    #   run: |
-    #     jq -r '.github.event.release.published'
-    #     #PRE_RELEASE=$(jq -r '.release.prerelease' "$GITHUB_EVENT_PATH")
-    #     #RELEASE_TAG=$(jq -r '.release.tag_name' "$GITHUB_EVENT_PATH")
-    #     #echo $PRE_RELEASE
-    # - uses: Chia-Network/actions/clean-workspace@main
+    - name: Set Env
+      if: github.event.release.published
+      run: |
+        PRE_RELEASE=$(jq -r '.release.prerelease' "$GITHUB_EVENT_PATH")
+        RELEASE_TAG=$(jq -r '.release.tag_name' "$GITHUB_EVENT_PATH")
+        echo "RELEASE=true" >>$GITHUB_ENV
+        echo "PRE_RELEASE=$PRE_RELEASE" >>$GITHUB_ENV
+        echo "RELEASE_TAG=$RELEASE_TAG" >>$GITHUB_ENV
+        [[ $PRE_RELEASE == false ]] && echo "FULL_RELEASE=true" >>$GITHUB_ENV || echo "FULL_RELEASE=false" >>$GITHUB_ENV
 
+    - name: Prerelease
+      if: env.PRE_RELEASE == 'true'
+      run: |
+        echo "This is a prerelease, and your tag is $RELEASE_TAG"
+
+    - name: Full release
+      if: env.FULL_RELEASE == 'true'
+      run: |
+        echo "This is a full release, and your tag is $RELEASE_TAG"
+
+    - name: Handle any release type
+      if: env.RELEASE == 'true'
+      run: |
+        echo "Doing some release action. I don't care what kind of release it is."
+        if [[ $PRE_RELEASE == true ]]; then
+          echo "This is a prerelease, and your tag is $RELEASE_TAG"
+        elif [[ $FULL_RELEASE == true ]]; then
+          echo "This is a full release, and your tag is $RELEASE_TAG"
+        else
+          echo "What is this, a draft release?"
+          exit 1
+        fi
+
+    # - uses: Chia-Network/actions/clean-workspace@main
     # - name: Add safe git directory
     #   uses: Chia-Network/actions/git-mark-workspace-safe@main
 
