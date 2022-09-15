@@ -711,11 +711,9 @@ class WalletNode:
 
         # Ensure the list is sorted
 
-        before = len(items_input)
+        self.log.info(f"Filtering spam, total items: {len(items_input)}")
         items = await self.wallet_state_manager.filter_spam(list(sorted(items_input, key=last_change_height_cs)))
-        num_filtered = before - len(items)
-        if num_filtered > 0:
-            self.log.info(f"Filtered {num_filtered} spam transactions")
+        self.log.info(f"Filtered spam. Total left: {len(items)}")
 
         async def receive_and_validate(inner_states: List[CoinState], inner_idx_start: int, cs_heights: List[uint32]):
             try:
